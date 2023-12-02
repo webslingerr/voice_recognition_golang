@@ -1,0 +1,86 @@
+definitions:
+  models.Response:
+    properties:
+      data:
+        additionalProperties: true
+        type: object
+      match:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /load-recording:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Uploads and saves a recording with the specified name.
+      operationId: loadRecording
+      parameters:
+      - description: Recording file (WAV format)
+        in: formData
+        name: recording
+        required: true
+        type: file
+      - description: Name to save the recording as
+        in: query
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"response": "Saved successfully"}'
+          schema:
+            type: string
+        "400":
+          description: '{"response": "Bad Request"}'
+          schema:
+            type: string
+        "415":
+          description: '{"response": "Unsupported Media Type. Only WAV files are allowed."}'
+          schema:
+            type: string
+        "500":
+          description: '{"response": "Internal Server Error"}'
+          schema:
+            type: string
+      summary: Load a recording
+      tags:
+      - Recording
+  /recognize-voice:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Recognizes a voice from an input recording.
+      operationId: recognizeVoice
+      parameters:
+      - description: Recording file (WAV format)
+        in: formData
+        name: input_recording
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: '{"response": "Bad Request"}'
+          schema:
+            type: string
+        "415":
+          description: '{"response": "Unsupported Media Type. Only WAV files are allowed."}'
+          schema:
+            type: string
+        "500":
+          description: '{"response": "Internal Server Error"}'
+          schema:
+            type: string
+      summary: Recognize a voice
+      tags:
+      - Input
+swagger: "2.0"

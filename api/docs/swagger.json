@@ -1,0 +1,131 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/load-recording": {
+            "post": {
+                "description": "Uploads and saves a recording with the specified name.",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Recording"
+                ],
+                "summary": "Load a recording",
+                "operationId": "loadRecording",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "Recording file (WAV format)",
+                        "name": "recording",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Name to save the recording as",
+                        "name": "name",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"response\": \"Saved successfully\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "{\"response\": \"Bad Request\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "415": {
+                        "description": "{\"response\": \"Unsupported Media Type. Only WAV files are allowed.\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "{\"response\": \"Internal Server Error\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/recognize-voice": {
+            "post": {
+                "description": "Recognizes a voice from an input recording.",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Input"
+                ],
+                "summary": "Recognize a voice",
+                "operationId": "recognizeVoice",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "Recording file (WAV format)",
+                        "name": "input_recording",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "{\"response\": \"Bad Request\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "415": {
+                        "description": "{\"response\": \"Unsupported Media Type. Only WAV files are allowed.\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "{\"response\": \"Internal Server Error\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Response": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "match": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
